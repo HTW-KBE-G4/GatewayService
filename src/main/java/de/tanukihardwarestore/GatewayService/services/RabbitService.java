@@ -11,7 +11,7 @@ public interface RabbitService {
 
     public RawProduct getOneProduct(String userID, long productID);
 
-    public List<PCComponent> getAllProducts();
+    public List<PCComponent> getAllComponents();
 
     public PCComponent getOneComponent(long componentID);
 

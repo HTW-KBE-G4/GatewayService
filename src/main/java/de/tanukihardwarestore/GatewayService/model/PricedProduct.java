@@ -28,6 +28,14 @@ public class PricedProduct {
         this.uvp = uvp;
     }
 
+    public PricedProduct(RawProduct rawProduct, double uvp) {
+        this.product_id = rawProduct.getProductID();
+        this.name = rawProduct.getName();
+        this.components = rawProduct.getComponents();
+        this.image_url = rawProduct.getImageURL();
+        this.uvp = uvp;
+    }
+
     @Override
     public String toString() {
         return "Product{" +

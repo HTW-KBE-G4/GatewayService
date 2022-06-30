@@ -8,9 +8,12 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/tmp/realm-export.json
+    volumes:
+      - ./realm-export.json:/tmp/realm-export.json
 
-  gateway:
-    container_name: gateway
-    build: .
-    depends_on:
-      - keycloak
+  #gateway:
+   # container_name: gateway
+    #build: .
+    #depends_on:
+      #- keycloak

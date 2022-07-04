@@ -3,6 +3,8 @@ services:
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:15.0.1
+    expose:
+      - "8080"
     ports:
       - '8005:8080'
     environment:
@@ -11,11 +13,14 @@ services:
       - KEYCLOAK_IMPORT=/tmp/realm-export.json
     volumes:
       - ./realm-export.json:/tmp/realm-export.json
+    networks:
+      - default
 
   gateway:
     container_name: gateway
     build: .
     depends_on:
       - keycloak
+    restart: on-failure
     ports:
-      - '8800:8900'
+      - '8800:8800'

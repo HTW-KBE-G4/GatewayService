@@ -1,8 +1,5 @@
 package de.tanukihardwarestore.GatewayService.config;
 
-import de.tanukihardwarestore.GatewayService.rabbit.receiver.CurrencyQueueReceiver;
-import de.tanukihardwarestore.GatewayService.rabbit.receiver.PriceQueueReceiver;
-import de.tanukihardwarestore.GatewayService.rabbit.receiver.ProductQueueReceiver;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.DirectExchange;
@@ -14,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     public static final String PRODUCT_QUEUE_NAME = "product";
+    public static final String COMPONENT_QUEUE_NAME = "component";
     public static final String CURRENCY_QUEUE_NAME = "currency";
     public static final String PRICE_QUEUE_NAME = "price";
 
@@ -22,9 +20,6 @@ public class RabbitConfig {
 
         @Bean
         public DirectExchange exchange() { return new DirectExchange(CURRENCY_QUEUE_NAME); }
-
-        @Bean
-        public CurrencyQueueReceiver receiver() { return new CurrencyQueueReceiver(); }
 
         @Bean
         public Binding binding(DirectExchange exchange,
@@ -41,9 +36,6 @@ public class RabbitConfig {
         public DirectExchange exchange() { return new DirectExchange(PRODUCT_QUEUE_NAME); }
 
         @Bean
-        public ProductQueueReceiver receiver() { return new ProductQueueReceiver(); }
-
-        @Bean
         public Binding binding(DirectExchange exchange,
                                Queue queue) {
             return BindingBuilder.bind(queue)
@@ -56,9 +48,6 @@ public class RabbitConfig {
 
         @Bean
         public DirectExchange exchange() { return new DirectExchange(PRICE_QUEUE_NAME); }
-
-        @Bean
-        public PriceQueueReceiver receiver() { return new PriceQueueReceiver(); }
 
         @Bean
         public Binding binding(DirectExchange exchange,

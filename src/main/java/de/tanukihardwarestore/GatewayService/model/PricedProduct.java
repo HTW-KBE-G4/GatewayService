@@ -1,8 +1,9 @@
 package de.tanukihardwarestore.GatewayService.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class PricedProduct {
+public class PricedProduct implements Serializable {
 
     private Long product_id;
 

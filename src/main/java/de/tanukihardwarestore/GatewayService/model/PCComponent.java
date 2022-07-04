@@ -1,6 +1,8 @@
 package de.tanukihardwarestore.GatewayService.model;
 
-public class PCComponent {
+import java.io.Serializable;
+
+public class PCComponent implements Serializable {
 
     private Long component_id;
 

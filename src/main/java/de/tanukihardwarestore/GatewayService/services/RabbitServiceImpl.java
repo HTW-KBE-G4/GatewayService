@@ -36,9 +36,9 @@ public class RabbitServiceImpl implements RabbitService {
     public RawProduct getOneProduct(String userID, long productID) {
         ProductServiceRequest request = new ProductServiceRequestSingle(userID, productID);
 
-        ProductServiceResult result = (ProductServiceResult) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
+        RawProduct result = (RawProduct) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
 
-        return result.getProductList().get(0);
+        return result;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class RabbitServiceImpl implements RabbitService {
 
     @Override
     public PCComponent getOneComponent(long componentID) {
-        PCComponent pcComponent = (PCComponent) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, "GET "+componentID);
+        PCComponent pcComponent = (PCComponent) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, componentID);
 
         return pcComponent;
     }

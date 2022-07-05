@@ -7,7 +7,7 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:8005/auth/realms/Tanuki-Realm
+            issuer-uri: http://keycloak:8080/auth/realms/Tanuki-Realm
         registration:
           keycloak:
             client-id: spring-gateway-service

@@ -19,7 +19,6 @@ public class APIController {
     public String index(Principal principal) {
         return principal.getName();
     }
-
     /*
     @Autowired
     private ProductBuilderService productBuilderService;
@@ -53,6 +52,6 @@ public class APIController {
         // Maybe return product or at least a boolean
         this.rabbitService.postProduct(rawProduct, principal.getName());
     }
-
     */
+
 }

@@ -13,7 +13,7 @@ public class ProductBuilder implements ProductBuilderService {
         this.rabbitService = rabbitService;
     }
 
-    RabbitService rabbitService;
+    private RabbitService rabbitService;
 
     @Override
     public List<PricedProduct> getAllProducts(String userID, String currency) {

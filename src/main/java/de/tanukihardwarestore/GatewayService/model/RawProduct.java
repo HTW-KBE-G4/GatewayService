@@ -1,21 +1,24 @@
 package de.tanukihardwarestore.GatewayService.model;
 
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.util.Set;
 
+@Setter
+@NoArgsConstructor
 public class RawProduct implements Serializable {
 
-    private Long productID;
+    private Long product_id;
     private String name;
     private Set<PCComponent> components;
-    private String imageURL;
+    private String image_url;
 
-
-
-
-    public RawProduct(Long productID, String name, Set<PCComponent> components, String imageURL) {
+    public RawProduct(Long product_id, String name, Set<PCComponent> components, String image_url) {
         this.name = name;
         this.components = components;
+        this.image_url = image_url;
     }
 
     public Set<PCComponent> getComponents() {
@@ -26,11 +29,27 @@ public class RawProduct implements Serializable {
         return name;
     }
 
-    public Long getProductID() {
-        return productID;
+    public Long getProduct_id() {
+        return product_id;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
+    public void setComponents(Set<PCComponent> components) {
+        this.components = components;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setProduct_id(Long product_id) {
+        this.product_id = product_id;
     }
 }

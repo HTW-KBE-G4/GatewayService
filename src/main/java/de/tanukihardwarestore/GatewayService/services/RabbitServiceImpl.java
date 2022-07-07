@@ -1,12 +1,11 @@
 package de.tanukihardwarestore.GatewayService.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.tanukihardwarestore.GatewayService.config.RabbitConfig;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
-import de.tanukihardwarestore.GatewayService.services.requests.CreateProductRequest;
-import de.tanukihardwarestore.GatewayService.services.requests.CurrencyServiceRequest;
-import de.tanukihardwarestore.GatewayService.services.requests.ProductServiceRequest;
-import de.tanukihardwarestore.GatewayService.services.requests.ProductServiceRequestSingle;
+import de.tanukihardwarestore.GatewayService.services.requests.*;
 import de.tanukihardwarestore.GatewayService.services.results.ComponentQueueResult;
 import de.tanukihardwarestore.GatewayService.services.results.CurrencyServiceResult;
 import de.tanukihardwarestore.GatewayService.services.results.PriceServiceResult;
@@ -20,6 +19,7 @@ import java.util.List;
 @Service
 public class RabbitServiceImpl implements RabbitService {
 
+    private ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -27,30 +27,67 @@ public class RabbitServiceImpl implements RabbitService {
     public List<RawProduct> getAllProducts(String userID) {
         ProductServiceRequest request = new ProductServiceRequest(userID);
 
-        ProductServiceResult result = (ProductServiceResult) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
+        ProductServiceResult productServiceResult;
 
-        return result.getProductList();
+        try {
+            productServiceResult = objectMapper.readValue(result, ProductServiceResult.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return productServiceResult.getProductList();
     }
 
     @Override
     public RawProduct getOneProduct(String userID, long productID) {
-        ProductServiceRequest request = new ProductServiceRequestSingle(userID, productID);
+        ProductServiceRequestSingle request = new ProductServiceRequestSingle(userID, productID);
 
-        RawProduct result = (RawProduct) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
+        if (result.equals("") || result == null) {
+            return null;
+        }
+        RawProduct rawProduct;
 
-        return result;
+        try {
+            rawProduct = objectMapper.readValue(result, RawProduct.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return rawProduct;
     }
 
     @Override
     public List<PCComponent> getAllComponents() {
-        ComponentQueueResult result = (ComponentQueueResult) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, "GET ALL");
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, new GetAllComponentsRequest("GET ALL"));
+        ComponentQueueResult componentQueueResult = new ComponentQueueResult();
 
-        return result.getPcComponentList();
+         //deserialize json string onto object
+
+        try {
+            System.out.println("[Gateway-Service]: getAllComponents got String: "+result);
+            componentQueueResult = objectMapper.readValue(result, ComponentQueueResult.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        return componentQueueResult.getPcComponentList();
     }
 
     @Override
     public PCComponent getOneComponent(long componentID) {
-        PCComponent pcComponent = (PCComponent) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, componentID);
+        GetOneComponentRequest request = new GetOneComponentRequest(componentID);
+
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.SINGLE_COMPONENT_QUEUE, request);
+
+        PCComponent pcComponent;
+
+        try {
+            pcComponent = objectMapper.readValue(result, PCComponent.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         return pcComponent;
     }

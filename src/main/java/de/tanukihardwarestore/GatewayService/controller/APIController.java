@@ -3,12 +3,20 @@ package de.tanukihardwarestore.GatewayService.controller;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.PricedProduct;
+import de.tanukihardwarestore.GatewayService.services.ProductBuilder;
+import de.tanukihardwarestore.GatewayService.services.RabbitServiceImpl;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class APIController {
+
+
+    @Autowired
+    private RabbitServiceImpl rabbitService;
 
     @GetMapping("/products")
     public List<PricedProduct> getAllProcuts() {
@@ -26,7 +34,7 @@ public class APIController {
     }
 
     @GetMapping("/components/{id}")
-    public PCComponent getOneComponent() {
+    public PCComponent getOneComponent(@PathVariable Long id) {
         return null;
     }
 
@@ -35,5 +43,10 @@ public class APIController {
     public void postProduct(RawProduct rawProduct) {
     }
 
-
+    @GetMapping("/rabbit")
+    public List<PCComponent> getRabbit() {
+        List<PCComponent> pcComponent = rabbitService.getAllComponents();
+        System.out.println("GOT COMPONENT IN GETMAPPING FROM BACKEND: "+pcComponent);
+        return pcComponent;
+    }
 }

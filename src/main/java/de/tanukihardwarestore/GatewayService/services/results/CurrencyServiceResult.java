@@ -1,20 +1,19 @@
 package de.tanukihardwarestore.GatewayService.services.results;
 
-public class CurrencyServiceResult {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-    private final double price;
-    private final String currency;
+import java.io.Serializable;
 
-    public CurrencyServiceResult(double price, String currency) {
-        this.price = price;
-        this.currency = currency;
-    }
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CurrencyServiceResult implements Serializable {
 
-    public double getPrice() {
-        return price;
-    }
+    private double price;
+    private String currency;
 
-    public String getCurrency() {
-        return currency;
-    }
 }

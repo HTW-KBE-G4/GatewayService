@@ -1,6 +1,11 @@
 package de.tanukihardwarestore.GatewayService.services.requests;
 
-public class ProductServiceRequest {
+import lombok.Setter;
+
+import java.io.Serializable;
+
+@Setter
+public class ProductServiceRequest implements Serializable {
 
     private String userID;
 
@@ -9,7 +14,13 @@ public class ProductServiceRequest {
         this.userID = userID;
     }
 
+    public ProductServiceRequest() {}
+
     public String getUserID() {
         return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

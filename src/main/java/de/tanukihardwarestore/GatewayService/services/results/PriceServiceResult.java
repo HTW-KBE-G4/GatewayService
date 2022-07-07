@@ -1,14 +1,18 @@
 package de.tanukihardwarestore.GatewayService.services.results;
 
-public class PriceServiceResult {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.io.Serializable;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PriceServiceResult implements Serializable {
 
     private double total;
 
-    public PriceServiceResult(double total) {
-        this.total = total;
-    }
-
-    public double getTotal() {
-        return total;
-    }
 }

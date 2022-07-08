@@ -2,15 +2,11 @@ server:
   port: 8800
 
 spring:
+  main:
+    web-application-type: reactive
   security:
     oauth2:
-      client:
-        provider:
-          keycloak:
-            issuer-uri: http://keycloak:8080/auth/realms/Tanuki-Realm
-        registration:
-          keycloak:
-            client-id: spring-gateway-service
-            client-secret: 5bc21c26-d8ab-45dd-a3c8-980b8c37cacf
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+      resourceserver:
+        jwt:
+          issuer-uri: http://keycloak:8080/auth/realms/Tanuki-Realm
+          jwk-set-uri: http://keycloak:8080/auth/realms/Tanuki-Realm/protocol/openid-connect/certs

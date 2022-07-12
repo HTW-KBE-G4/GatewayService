@@ -43,7 +43,7 @@ public class RabbitServiceImpl implements RabbitService {
     public RawProduct getOneProduct(String userID, long productID) {
         ProductServiceRequestSingle request = new ProductServiceRequestSingle(userID, productID);
 
-        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRODUCT_QUEUE_NAME, request);
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.SINGLE_PRODUCT_QUEUE, request);
         if (result.equals("") || result == null) {
             return null;
         }

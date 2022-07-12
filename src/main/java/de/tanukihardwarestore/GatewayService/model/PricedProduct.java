@@ -21,7 +21,6 @@ public class PricedProduct implements Serializable {
     private String image_url;
 
 
-
     public PricedProduct(Long id, String name, String image_url, Set<PCComponent> components) {
         this.product_id = id;
         this.name = name;

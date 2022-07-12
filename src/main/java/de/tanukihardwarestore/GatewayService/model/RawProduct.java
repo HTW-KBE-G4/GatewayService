@@ -15,10 +15,15 @@ public class RawProduct implements Serializable {
     private Set<PCComponent> components;
     private String image_url;
 
-    public RawProduct(Long product_id, String name, Set<PCComponent> components, String image_url) {
+    private String user_id;
+
+    public RawProduct(Long id, String name, String image_url, Set<PCComponent> components, String user_id) {
+        super();
+        this.product_id = id;
         this.name = name;
         this.components = components;
         this.image_url = image_url;
+        this.user_id = user_id;
     }
 
     public Set<PCComponent> getComponents() {
@@ -37,19 +42,7 @@ public class RawProduct implements Serializable {
         return image_url;
     }
 
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
-    }
-
-    public void setComponents(Set<PCComponent> components) {
-        this.components = components;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setProduct_id(Long product_id) {
-        this.product_id = product_id;
+    public String getUser_id() {
+        return user_id;
     }
 }

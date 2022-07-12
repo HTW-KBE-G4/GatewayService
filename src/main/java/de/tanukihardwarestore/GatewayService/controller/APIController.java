@@ -14,15 +14,8 @@ import java.util.List;
 @RestController
 public class APIController {
 
-    // Remove! Just for testing purposes
-    @GetMapping("/")
-    public String index(Principal principal) {
-        return principal.getName();
-    }
-    /*
     @Autowired
     private ProductBuilderService productBuilderService;
-
     @Autowired
     private RabbitService rabbitService;
 
@@ -52,6 +45,4 @@ public class APIController {
         // Maybe return product or at least a boolean
         this.rabbitService.postProduct(rawProduct, principal.getName());
     }
-    */
-
 }

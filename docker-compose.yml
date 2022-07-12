@@ -1,4 +1,5 @@
 version: '3.1'
+
 services:
   keycloak:
     container_name: keycloak
@@ -17,6 +18,8 @@ services:
       interval: 20s
       timeout: 5s
       retries: 15
+    networks:
+      - default
   gateway:
     container_name: gateway
     build: .
@@ -25,4 +28,14 @@ services:
         condition: service_healthy
     restart: on-failure
     ports:
-      - '8800:8800'
+      - '8800'
+      - '15672'
+    networks:
+      - default
+      - messagebrokerservice_default
+
+networks:
+  default:
+    internal: true
+  messagebrokerservice_default:
+    external: true

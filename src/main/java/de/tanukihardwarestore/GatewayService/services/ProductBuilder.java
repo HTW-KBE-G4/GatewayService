@@ -3,20 +3,17 @@ package de.tanukihardwarestore.GatewayService.services;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.PricedProduct;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
 
-@Service
 public class ProductBuilder implements ProductBuilderService {
 
-    public ProductBuilder(RabbitServiceImpl rabbitService) {
+    public ProductBuilder(RabbitService rabbitService) {
         this.rabbitService = rabbitService;
     }
 
-    private RabbitServiceImpl rabbitService;
+    RabbitService rabbitService;
 
     @Override
     public List<PricedProduct> getAllProducts(String userID, String currency) {

@@ -3,7 +3,7 @@ version: '3.1'
 services:
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:15.0.1
+    image: sleighzy/keycloak
     ports:
       - '8080:8080'
     environment:
@@ -11,25 +11,28 @@ services:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
       - KEYCLOAK_IMPORT=/tmp/realm-export.json
+      - KEYCLOAK_LOGLEVEL=DEBUG
+      - ROOT_LOGLEVEL=DEBUG
+      - PROXY_ADDRESS_FORWARDING=true
+      - KEYCLOAK_FRONTEND_URL=http://localhost:8080/auth
     volumes:
       - ./realm-export.json:/tmp/realm-export.json
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8080/auth/" ]
-      interval: 20s
-      timeout: 5s
-      retries: 15
     networks:
       - default
+      - messagebrokerservice_default
+
+    #network_mode: host   #attaches the container to the host network -> localhost will go into network from host...
+
   gateway:
     container_name: gateway
     build: .
     depends_on:
-      keycloak:
-        condition: service_healthy
+      - keycloak
     restart: on-failure
     ports:
       - '8800'
       - '15672'
+    network_mode: host
     networks:
       - default
       - messagebrokerservice_default

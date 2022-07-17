@@ -8,5 +8,22 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/auth/realms/Tanuki-Realm
-          jwk-set-uri: http://keycloak:8080/auth/realms/Tanuki-Realm/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/auth/realms/Tanuki-Realm
+          #jwk-set-uri: http://keycloak:8080/auth/realms/Tanuki-Realm/protocol/openid-connect/certs
+
+  rabbitmq:
+    host: rabbit
+
+keycloak:
+  cors: true
+  #authServerUrl: http://keycloak:8080/auth
+  #proxyUrl: http://localhost:8080/auth
+  #cors-max-age: 0
+  #use-resource-role-mappings: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          web: DEBUG

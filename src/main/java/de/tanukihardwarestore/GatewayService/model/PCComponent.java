@@ -1,14 +1,6 @@
 package de.tanukihardwarestore.GatewayService.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.io.Serializable;
-
-@NoArgsConstructor
-public class PCComponent implements Serializable {
+public class PCComponent {
 
     private Long component_id;
 
@@ -141,9 +133,5 @@ public class PCComponent implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setUvp(Float uvp) {
-        this.uvp = uvp;
     }
 }

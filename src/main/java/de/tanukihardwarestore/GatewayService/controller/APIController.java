@@ -3,46 +3,37 @@ package de.tanukihardwarestore.GatewayService.controller;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.PricedProduct;
-import de.tanukihardwarestore.GatewayService.services.ProductBuilderService;
-import de.tanukihardwarestore.GatewayService.services.RabbitService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @RestController
 public class APIController {
 
-    @Autowired
-    private ProductBuilderService productBuilderService;
-    @Autowired
-    private RabbitService rabbitService;
-
     @GetMapping("/products")
-    public List<PricedProduct> getAllProducts(@RequestParam String currency, Principal principal) {
-        return this.productBuilderService.getAllProducts(principal.getName(), currency);
+    public List<PricedProduct> getAllProcuts() {
+        return null;
     }
 
     @GetMapping("/products/{id}")
-    public PricedProduct getAProduct(@PathVariable long id, @RequestParam String currency, Principal principal) {
-        return this.productBuilderService.getOneProduct(principal.getName(), id, currency);
+    public PricedProduct getAProduct(@PathVariable long id) {
+        return null;
     }
 
     @GetMapping("/components")
-    public List<PCComponent> getAllComponents(@RequestParam String currency) {
-        return this.productBuilderService.getAllComponents(currency);
+    public List<PCComponent> getAllComponents() {
+        return null;
     }
 
     @GetMapping("/components/{id}")
-    public PCComponent getOneComponent(@PathVariable long id, @RequestParam String currency) {
-        return this.productBuilderService.getOneComponent(id, currency);
+    public PCComponent getOneComponent() {
+        return null;
     }
 
 
     @PostMapping("/products/create")
-    public void postProduct(RawProduct rawProduct, Principal principal) {
-        // Maybe return product or at least a boolean
-        this.rabbitService.postProduct(rawProduct, principal.getName());
+    public void postProduct(RawProduct rawProduct) {
     }
+
+
 }

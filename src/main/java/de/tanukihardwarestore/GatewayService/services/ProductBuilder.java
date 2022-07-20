@@ -12,11 +12,11 @@ import java.util.List;
 @Service
 public class ProductBuilder implements ProductBuilderService {
 
-    public ProductBuilder(RabbitServiceImpl rabbitService) {
+    public ProductBuilder(RabbitService rabbitService) {
         this.rabbitService = rabbitService;
     }
 
-    private RabbitServiceImpl rabbitService;
+    private RabbitService rabbitService;
 
     @Override
     public List<PricedProduct> getAllProducts(String userID, String currency) {

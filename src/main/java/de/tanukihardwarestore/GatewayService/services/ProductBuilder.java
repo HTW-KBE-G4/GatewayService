@@ -22,8 +22,8 @@ public class ProductBuilder implements ProductBuilderService {
     public List<PricedProduct> getAllProducts(String userID, String currency) {
         List<RawProduct> rawProducts = rabbitService.getAllProducts(userID);
         List<PricedProduct> pricedProducts = new LinkedList<PricedProduct>();
-        for(RawProduct product: rawProducts) {
-            pricedProducts.add(priceProduct(product,currency));
+        for (RawProduct product : rawProducts) {
+            pricedProducts.add(priceProduct(product, currency));
         }
         return pricedProducts;
     }
@@ -31,12 +31,12 @@ public class ProductBuilder implements ProductBuilderService {
     @Override
     public PricedProduct getOneProduct(String userID, long productID, String currency) {
         RawProduct product = rabbitService.getOneProduct(userID, productID);
-        return priceProduct(product,currency);
+        return priceProduct(product, currency);
     }
 
     private PricedProduct priceProduct(RawProduct product, String currency) {
         LinkedList<PCComponent> components = new LinkedList<>(product.getComponents());
-        for(PCComponent component: components) {
+        for (PCComponent component : components) {
             convertCurrencyOfComponent(component, currency);
         }
         double price = rabbitService.calculatePrice(components);
@@ -44,14 +44,14 @@ public class ProductBuilder implements ProductBuilderService {
     }
 
     private PCComponent convertCurrencyOfComponent(PCComponent component, String currency) {
-        component.setUvp((float)rabbitService.calculateCurrency(component.getUvp(), "USD", currency));
+        component.setUvp((float) rabbitService.calculateCurrency(component.getUvp(), "USD", currency));
         return component;
     }
 
     @Override
     public List<PCComponent> getAllComponents(String currency) {
         List<PCComponent> components = rabbitService.getAllComponents();
-        for(PCComponent component: components) {
+        for (PCComponent component : components) {
             convertCurrencyOfComponent(component, currency);
         }
         return components;

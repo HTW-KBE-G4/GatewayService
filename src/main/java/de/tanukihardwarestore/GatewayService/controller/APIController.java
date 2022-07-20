@@ -3,8 +3,10 @@ package de.tanukihardwarestore.GatewayService.controller;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.PricedProduct;
+import de.tanukihardwarestore.GatewayService.services.ProductBuilder;
 import de.tanukihardwarestore.GatewayService.services.ProductBuilderService;
 import de.tanukihardwarestore.GatewayService.services.RabbitService;
+import de.tanukihardwarestore.GatewayService.services.RabbitServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +14,13 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class APIController {
 
     @Autowired
-    private ProductBuilderService productBuilderService;
+    private ProductBuilder productBuilderService;
     @Autowired
-    private RabbitService rabbitService;
+    private RabbitServiceImpl rabbitService;
 
     @GetMapping("/products")
     public List<PricedProduct> getAllProducts(@RequestParam String currency, Principal principal) {

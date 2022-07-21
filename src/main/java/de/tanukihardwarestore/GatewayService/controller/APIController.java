@@ -3,6 +3,7 @@ package de.tanukihardwarestore.GatewayService.controller;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.PricedProduct;
+import de.tanukihardwarestore.GatewayService.model.RawerProduct;
 import de.tanukihardwarestore.GatewayService.services.ProductBuilderService;
 import de.tanukihardwarestore.GatewayService.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class APIController {
 
 
     @PostMapping("/products/create")
-    public void postProduct(RawProduct rawProduct, Principal principal) {
-        // Maybe return product or at least a boolean
-        this.rabbitService.postProduct(rawProduct, principal.getName());
+    public void postProduct(RawerProduct rawerProduct, Principal principal) {
+        rawerProduct.setName(principal.getName());
+        this.rabbitService.postProduct(rawerProduct);
     }
 }

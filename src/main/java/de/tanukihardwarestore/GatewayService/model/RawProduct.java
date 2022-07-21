@@ -26,6 +26,13 @@ public class RawProduct implements Serializable {
         this.user_id = user_id;
     }
 
+    public RawProduct(RawerProduct product, Long product_id, String image_url) {
+        this.components = product.getComponents();
+        this.name = product.getName();
+        this.image_url = image_url;
+        this.product_id = product_id;
+    }
+
     public Set<PCComponent> getComponents() {
         return components;
     }

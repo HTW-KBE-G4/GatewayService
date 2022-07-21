@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.tanukihardwarestore.GatewayService.config.RabbitConfig;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
+import de.tanukihardwarestore.GatewayService.model.RawerProduct;
 import de.tanukihardwarestore.GatewayService.services.requests.*;
 import de.tanukihardwarestore.GatewayService.services.results.ComponentQueueResult;
 import de.tanukihardwarestore.GatewayService.services.results.CurrencyServiceResult;
@@ -93,10 +94,9 @@ public class RabbitServiceImpl implements RabbitService {
     }
 
     @Override
-    public void postProduct(RawProduct product, String userID) {
-        CreateProductRequest request = new CreateProductRequest(product, userID);
-
-        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_QUEUE_NAME, RabbitConfig.PRODUCT_QUEUE_NAME, request);
+    public void postProduct(RawerProduct product) {
+        RawProduct sentProduct = new RawProduct(product,1L,"Dummy");
+        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_QUEUE_NAME, RabbitConfig.PRODUCT_QUEUE_NAME, sentProduct);
     }
 
     @Override

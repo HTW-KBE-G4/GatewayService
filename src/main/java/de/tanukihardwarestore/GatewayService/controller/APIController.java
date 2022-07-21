@@ -44,7 +44,8 @@ public class APIController {
 
     @PostMapping("/products/create")
     public void postProduct(RawerProduct rawerProduct, Principal principal) {
-        rawerProduct.setName(principal.getName());
-        this.rabbitService.postProduct(rawerProduct);
+        RawProduct rawProduct = new RawProduct(rawerProduct,1L,"");
+        rawProduct.setUser_id(principal.getName());
+        this.rabbitService.postProduct(rawProduct);
     }
 }

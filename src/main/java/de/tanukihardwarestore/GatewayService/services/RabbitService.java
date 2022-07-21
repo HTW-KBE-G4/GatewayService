@@ -16,7 +16,7 @@ public interface RabbitService {
 
     public PCComponent getOneComponent(long componentID);
 
-    public void postProduct(RawerProduct product);
+    public void postProduct(RawProduct product);
 
     public double calculatePrice(List<PCComponent> components);
 

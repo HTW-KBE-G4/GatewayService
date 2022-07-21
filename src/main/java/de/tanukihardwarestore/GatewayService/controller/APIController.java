@@ -43,7 +43,10 @@ public class APIController {
 
 
     @PostMapping("/products/create")
-    public void postProduct(RawerProduct rawerProduct, Principal principal) {
+    public void postProduct(@RequestBody RawerProduct rawerProduct, Principal principal) {
+
+        System.out.println("postProduct: got raw Product: "+rawerProduct);
+
         RawProduct rawProduct = new RawProduct(rawerProduct,1L,"");
         rawProduct.setUser_id(principal.getName());
         this.rabbitService.postProduct(rawProduct);

@@ -52,4 +52,15 @@ public class RawProduct implements Serializable {
     public String getUser_id() {
         return user_id;
     }
+
+    @Override
+    public String toString() {
+        return "RawProduct{" +
+                "product_id=" + product_id +
+                ", name='" + name + '\'' +
+                ", components=" + components +
+                ", image_url='" + image_url + '\'' +
+                ", user_id='" + user_id + '\'' +
+                '}';
+    }
 }

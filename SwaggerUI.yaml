@@ -169,9 +169,6 @@ definitions:
     - "name"
     - "components"
     properties:
-      product_id:
-        type: "integer"
-        format: "int64"
       name:
         type: "string"
         example: "Streamer PC"
@@ -182,10 +179,6 @@ definitions:
           wrapped: true
         items:
           $ref: "#/definitions/Component"
-      image_url:
-        type: "string"
-      user_id:
-        type: "string"
   PricedProduct:
     type: "object"
     required:

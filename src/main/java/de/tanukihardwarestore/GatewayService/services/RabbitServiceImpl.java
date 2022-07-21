@@ -97,7 +97,7 @@ public class RabbitServiceImpl implements RabbitService {
     @Override
     public void postProduct(RawerProduct product) {
         RawProduct sentProduct = new RawProduct(product,1L,"Dummy");
-        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_QUEUE_NAME, RabbitConfig.PRODUCT_QUEUE_NAME, sentProduct);
+        rabbitTemplate.convertAndSend(RabbitConfig.CREATE_PRODUCT_QUEUE, RabbitConfig.CREATE_PRODUCT_QUEUE, sentProduct);
     }
 
     @Override

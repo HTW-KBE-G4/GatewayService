@@ -38,10 +38,33 @@ public class RabbitConfig {
     public static final String COMPONENT_QUEUE_NAME = "component";
     public static final String CURRENCY_QUEUE_NAME = "currency";
     public static final String PRICE_QUEUE_NAME = "price";
-
     public static final String SINGLE_COMPONENT_QUEUE = "single.component";
-
     public static final String SINGLE_PRODUCT_QUEUE = "single.product";
+
+    public static final String CREATE_PRODUCT_QUEUE = "product.create";
+
+    private static class ProductCreateQueueConfig {
+
+        @Bean
+        @Qualifier("createProductExchange")
+        public DirectExchange createProductExchange() {
+            return new DirectExchange(CREATE_PRODUCT_QUEUE);
+        }
+
+        @Bean
+        public Binding bindCreateProduct(@Qualifier("createProductExchange") DirectExchange exchange,
+                                         @Qualifier("createProductQueue") Queue queue) {
+            return BindingBuilder.bind(queue)
+                    .to(exchange)
+                    .with(CREATE_PRODUCT_QUEUE);
+        }
+
+        @Bean
+        @Qualifier("createProductQueue")
+        public Queue createProductQueue() {
+            return new Queue(CREATE_PRODUCT_QUEUE, false);
+        }
+    }
     private static class CurrencyQueueReceiverConfiguration {
 
         @Bean

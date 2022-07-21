@@ -1,0 +1,247 @@
+swagger: "2.0"
+info:
+  description: "A store for custom PCs and miscellaneus hardware components"
+  version: "1.0.0"
+  title: "Tanuki Hardware Store"
+tags:
+- name: "products"
+  description: "Access to the products database"
+- name: "components"
+  description: "Access to the components database"
+schemes:
+- "https"
+- "http"
+paths:
+  /products/:
+    get:
+      tags:
+      - "products"
+      summary: "Get a list of all products"
+      description: "Returns all products"
+      operationId: "getAllProducts"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "currency"
+        in: "query"
+        required: true
+        type: "string"
+      security: 
+        - keycloak: [read]
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            xml:
+              name: "product"
+              wrapped: true
+            items:
+              $ref: "#/definitions/PricedProduct"
+  /products/{id}:
+    get:
+      tags:
+      - "products"
+      summary: "Find product by ID"
+      description: "Returns a single product"
+      operationId: "getProductById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of product to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "currency"
+        in: "query"
+        required: true
+        type: "string"
+      security: 
+        - keycloak: [read]
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/PricedProduct"
+        "400":
+          description: "Invalid currency supplied"
+        "404":
+          description: "Product not found"
+  /products/create:
+    post:
+      tags:
+      - "products"
+      summary: "Add a new product to the database"
+      operationId: "addProduct"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Product object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/RawProduct"
+      security: 
+        - keycloak: [write]
+      responses:
+        "405":
+          description: "Invalid input"
+  /components/:
+    get:
+      tags:
+      - "components"
+      summary: "Get a list of all components"
+      description: "Returns all components"
+      operationId: "getAllComponents"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "currency"
+        in: "query"
+        required: true
+        type: "string"
+      security: 
+        - keycloak: [read]
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            xml:
+              name: "component"
+              wrapped: true
+            items:
+              $ref: "#/definitions/Component"
+  /components/{id}:
+    get:
+      tags:
+      - "components"
+      summary: "Find component by ID"
+      description: "Returns a single component"
+      operationId: "getComponentById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of component to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "currency"
+        in: "query"
+        required: true
+        type: "string"
+      security: 
+        - keycloak: [read]
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Component"
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Product not found"
+securityDefinitions:
+  keycloak:
+    type: "oauth2"
+    authorizationUrl: "http://localhost:8090/auth"
+    flow: "implicit"
+    scopes:
+      write: "Allows modifying Resources"
+      read: "Allows reading resources"
+definitions:
+  RawProduct:
+    type: "object"
+    required:
+    - "name"
+    - "components"
+    properties:
+      product_id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Streamer PC"
+      components:
+        type: "array"
+        xml:
+          name: "component"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Component"
+      image_url:
+        type: "string"
+      user_id:
+        type: "string"
+  PricedProduct:
+    type: "object"
+    required:
+    - "name"
+    - "components"
+    properties:
+      product_id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Streamer PC"
+      components:
+        type: "array"
+        xml:
+          name: "component"
+          wrapped: true
+        items:
+          $ref: "#/definitions/Component"
+      image_url:
+        type: "string"
+      user_id:
+        type: "string"
+      uvp:
+        type: "number"
+        format: "double"
+  Component:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      component_id:
+        type: "integer"
+        format: "int64"
+      type:
+        type: "string"
+      model:
+        type: "string"
+      description:
+        type: "string"
+      manufacturer:
+        type: "string"
+      releaseDate:
+        type: "string"
+      productName:
+        type: "string"
+      image_url:
+        type: "string"
+      user_id:
+        type: "string"
+      uvp:
+        type: "number"
+        format: "float"
+      weight:
+        type: "number"
+        format: "float"
+externalDocs:
+  description: "Find us on Github"
+  url: "https://github.com/HTW-KBE-G4"

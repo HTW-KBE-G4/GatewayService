@@ -15,6 +15,7 @@ public class ProductBuilder implements ProductBuilderService {
     public ProductBuilder(RabbitService rabbitService) {
         this.rabbitService = rabbitService;
     }
+    private static final String defaultCurrency = "USD";
 
     private RabbitService rabbitService;
 
@@ -44,7 +45,7 @@ public class ProductBuilder implements ProductBuilderService {
     }
 
     private PCComponent convertCurrencyOfComponent(PCComponent component, String currency) {
-        component.setUvp((float)rabbitService.calculateCurrency(component.getUvp(), "USD", currency));
+        component.setUvp((float)rabbitService.calculateCurrency(component.getUvp(), defaultCurrency, currency));
         return component;
     }
 

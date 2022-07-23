@@ -46,9 +46,6 @@ public class RabbitServiceImpl implements RabbitService {
         ProductServiceRequestSingle request = new ProductServiceRequestSingle(userID, productID);
 
         String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.SINGLE_PRODUCT_QUEUE, request);
-        if (result.equals("") || result == null) {
-            return null;
-        }
         RawProduct rawProduct;
 
         try {
@@ -64,8 +61,6 @@ public class RabbitServiceImpl implements RabbitService {
     public List<PCComponent> getAllComponents() {
         String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, new GetAllComponentsRequest("GET ALL"));
         ComponentQueueResult componentQueueResult = new ComponentQueueResult();
-
-        //deserialize json string onto object
 
         try {
             System.out.println("[Gateway-Service]: getAllComponents got String: " + result);
@@ -107,8 +102,6 @@ public class RabbitServiceImpl implements RabbitService {
         PriceServiceResult priceServiceResult;
         try {
             priceServiceResult = objectMapper.readValue(result, PriceServiceResult.class);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -123,8 +116,6 @@ public class RabbitServiceImpl implements RabbitService {
         CurrencyServiceResult currencyServiceResult;
         try {
             currencyServiceResult = objectMapper.readValue(result, CurrencyServiceResult.class);
-        } catch (JsonMappingException e) {
-            throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

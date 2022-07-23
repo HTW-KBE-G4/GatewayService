@@ -1,10 +1,12 @@
 package de.tanukihardwarestore.GatewayService.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.tanukihardwarestore.GatewayService.config.RabbitConfig;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
+import de.tanukihardwarestore.GatewayService.model.RawerProduct;
 import de.tanukihardwarestore.GatewayService.services.requests.*;
 import de.tanukihardwarestore.GatewayService.services.results.ComponentQueueResult;
 import de.tanukihardwarestore.GatewayService.services.results.CurrencyServiceResult;
@@ -44,9 +46,6 @@ public class RabbitServiceImpl implements RabbitService {
         ProductServiceRequestSingle request = new ProductServiceRequestSingle(userID, productID);
 
         String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.SINGLE_PRODUCT_QUEUE, request);
-        if (result.equals("") || result == null) {
-            return null;
-        }
         RawProduct rawProduct;
 
         try {
@@ -63,10 +62,8 @@ public class RabbitServiceImpl implements RabbitService {
         String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.COMPONENT_QUEUE_NAME, new GetAllComponentsRequest("GET ALL"));
         ComponentQueueResult componentQueueResult = new ComponentQueueResult();
 
-         //deserialize json string onto object
-
         try {
-            System.out.println("[Gateway-Service]: getAllComponents got String: "+result);
+            System.out.println("[Gateway-Service]: getAllComponents got String: " + result);
             componentQueueResult = objectMapper.readValue(result, ComponentQueueResult.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
@@ -93,24 +90,36 @@ public class RabbitServiceImpl implements RabbitService {
     }
 
     @Override
-    public void postProduct(RawProduct product, String userID) {
-        CreateProductRequest request = new CreateProductRequest(product, userID);
-
-        rabbitTemplate.convertAndSend(RabbitConfig.PRODUCT_QUEUE_NAME, RabbitConfig.PRODUCT_QUEUE_NAME, request);
+    public void postProduct(RawProduct product) {
+        System.out.println("RabbitService: postProduct: got raw Product: "+product);
+        String resultString = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.CREATE_PRODUCT_QUEUE, RabbitConfig.CREATE_PRODUCT_QUEUE, product);
+        System.out.println("Got String vom postProduct: "+resultString);
     }
 
     @Override
     public double calculatePrice(List<PCComponent> components) {
-        PriceServiceResult result = (PriceServiceResult) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRICE_QUEUE_NAME, components);
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.PRICE_QUEUE_NAME, components);
+        PriceServiceResult priceServiceResult;
+        try {
+            priceServiceResult = objectMapper.readValue(result, PriceServiceResult.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
-        return result.getTotal();
+        return priceServiceResult.getTotal();
     }
 
     @Override
     public double calculateCurrency(double value, String inputCurrency, String expectedCurrency) {
         CurrencyServiceRequest request = new CurrencyServiceRequest(inputCurrency, expectedCurrency, value);
-        CurrencyServiceResult result = (CurrencyServiceResult) rabbitTemplate.convertSendAndReceive(RabbitConfig.CURRENCY_QUEUE_NAME, request);
+        String result = (String) rabbitTemplate.convertSendAndReceive(RabbitConfig.CURRENCY_QUEUE_NAME, request);
+        CurrencyServiceResult currencyServiceResult;
+        try {
+            currencyServiceResult = objectMapper.readValue(result, CurrencyServiceResult.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
-        return result.getPrice();
+        return currencyServiceResult.getPrice();
     }
 }

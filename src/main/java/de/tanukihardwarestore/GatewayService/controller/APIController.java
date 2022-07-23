@@ -3,6 +3,7 @@ package de.tanukihardwarestore.GatewayService.controller;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.PricedProduct;
+import de.tanukihardwarestore.GatewayService.model.RawerProduct;
 import de.tanukihardwarestore.GatewayService.services.ProductBuilderService;
 import de.tanukihardwarestore.GatewayService.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class APIController {
 
     @Autowired
@@ -41,8 +43,12 @@ public class APIController {
 
 
     @PostMapping("/products/create")
-    public void postProduct(RawProduct rawProduct, Principal principal) {
-        // Maybe return product or at least a boolean
-        this.rabbitService.postProduct(rawProduct, principal.getName());
+    public void postProduct(@RequestBody RawerProduct rawerProduct, Principal principal) {
+
+        System.out.println("postProduct: got raw Product: "+rawerProduct);
+
+        RawProduct rawProduct = new RawProduct(rawerProduct,1L,"");
+        rawProduct.setUser_id(principal.getName());
+        this.rabbitService.postProduct(rawProduct);
     }
 }

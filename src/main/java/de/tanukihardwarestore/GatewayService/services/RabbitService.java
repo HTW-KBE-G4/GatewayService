@@ -2,6 +2,7 @@ package de.tanukihardwarestore.GatewayService.services;
 
 import de.tanukihardwarestore.GatewayService.model.PCComponent;
 import de.tanukihardwarestore.GatewayService.model.RawProduct;
+import de.tanukihardwarestore.GatewayService.model.RawerProduct;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface RabbitService {
 
     public PCComponent getOneComponent(long componentID);
 
-    public void postProduct(RawProduct product, String userID);
+    public void postProduct(RawProduct product);
 
     public double calculatePrice(List<PCComponent> components);
 

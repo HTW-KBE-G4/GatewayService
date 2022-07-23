@@ -55,8 +55,8 @@ public class MockRabbitServiceImpl implements RabbitService {
     }
 
     @Override
-    public void postProduct(RawProduct product, String userID) {
-            //Not needed
+    public void postProduct(RawProduct product) {
+
     }
 
     @Override

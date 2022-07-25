@@ -67,7 +67,7 @@ GET /components/19
        "description": "Beschleunigen Sie Ihr gesamtes PC-Erlebnis mit der schnellen, leistungsstarken NVIDIA GeForce GT 1030-Grafikkarte.",
        "manufacturer": "MSI",
        "releaseDate": "2018",
-       "uvp": 142.78,
+       "uvp": 142.79,
        "weight": 400,
        "productName": "2GB MSI GeForce GT 1030 OC",
        "ean": 4719072561413,
